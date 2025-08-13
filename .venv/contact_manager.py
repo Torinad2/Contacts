@@ -14,15 +14,13 @@ FILENAME = 'contacts.dat'
 
 # main function
 def main():
-    # Load the existing contact dictionary and
-    # assign it to mycontacts.
+    # Load the existing contact dictionary and assign it to mycontacts.
     mycontacts = load_contacts()
 
     # Initialize a variable for the user's choice.
     choice = 0
 
-    # Process menu selections until the user
-    # wants to quit the program.
+    # Process menu selections until the user wants to quit the program.
     while choice != QUIT:
 
         # Get the user's menu choice.
@@ -49,15 +47,13 @@ def load_contacts():
             contact_dct = pickle.load(input_file)
 
     except FileNotFoundError:
-        # The file was not found, so create
-        # an empty dictionary.
+        # The file was not found, so create an empty dictionary.
         contact_dct = {}
 
     # Return the dictionary.
     return contact_dct
 
-# The get_menu_choice function displays the menu
-# and gets a validated choice from the user.
+# The get_menu_choice function displays the menu and gets a validated choice from the user.
 def get_menu_choice():
     print()
     print('Menu')
@@ -79,3 +75,74 @@ def get_menu_choice():
     # return the user's choice.
     return choice
 
+# The look_up function looks up an item in the specified dictionary.
+def look_up(mycontacts):
+    # Get a name to look up.
+    name = input('Enter a name: ')
+
+    # Look it up in the dictionary.
+    print(mycontacts.get(name, 'That name is not found.'))
+
+# The add function adds a new entry into the specified dictionary.
+def add(mycontacts):
+    # Get the contact info.
+    name = input('Name: ')
+    phone = input('Phone: ')
+    email = input('Email: ')
+
+    # Create a Contact object named entry.
+    entry = contact.Contact(name, phone, email)
+
+    # If the name does not exist in the dictionary, add it as a key with the entry object as the
+    # associated value.
+    if name not in mycontacts:
+        mycontacts[name] = entry
+        print('The entry has been added.')
+    else:
+        print('That name already exists.')
+
+# The change function changes an existing entry in the specified dictionary.
+
+def change(mycontacts):
+    # Get a name to look up.
+    name = input('Enter a name: ')
+
+    if name in mycontacts:
+        # Get a new phone number.
+        phone = input('Enter the new phone number: ')
+
+        # Get a new email address.
+        email = input('Enter the new email address: ')
+
+        # Create a contact object named entry.
+        entry = contact.Contact(name, phone, email)
+
+        # Update the entry.
+        mycontacts[name] = entry
+        print('Information updated.')
+    else:
+        print('That name is not found.')
+
+# The delete function deletes an entry from the specified dictionary.
+
+def delete(mycontacts):
+    # Get a name to look up.
+    name = input('Enter a name: ')
+
+    # If the name is found, delete the entry.
+    if name in mycontacts:
+        del mycontacts[name]
+        print('Entry deleted.')
+    else:
+        print('That name is not found.')
+
+# The save_contacts funtion pickles the specified object and saves it to the contacts file.
+def save_contacts(mycontacts):
+    # Open the file for binary writing.
+    with open(FILENAME, 'wb') as output_file:
+        # Pickle the dictionary and save it.
+        pickle.dump(mycontacts, output_file)
+
+# Call the main function.
+if __name__ == '__main__':
+    main()
